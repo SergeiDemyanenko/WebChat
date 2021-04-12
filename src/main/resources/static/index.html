@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>Web chat</title>
+<meta charset="utf-8">
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        let lastNumber = 0;
+    
+        function refreshChat() {
+            setTimeout(refreshChat, 3000);
+            
+            $.ajax({
+                url: '/get_lines',
+                type: 'get',
+                data: { 
+                    number: lastNumber,
+                },
+              
+                success: function(response) {
+                    for (let i = 0; i < response.length; i++) {
+                        $('textarea').val($('textarea').val() + '\n' + response[i].text);
+                        lastNumber = response[i].number;
+                    }
+                },
+              
+                error: function(xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
+        
+        refreshChat();
+    });
+    
+    function sendMessage() {
+         
+            let sendText = $("#input").val();
+            $("#input").val("");
+         
+            $.ajax({
+                url: '/add_line',
+                type: 'get',
+                data: { 
+                    text: sendText,
+                },
+              
+                success: function(response) {
+                    
+                },
+              
+                error: function(xhr) {
+                    //Do Something to handle error
+                }
+            });         
+    }
+</script>
+<body>
+    <textarea name="chat"></textarea><br/>
+    <input id="input" type="text"/>
+    <button onclick="sendMessage();">send</button>
+</body>
+</html>
