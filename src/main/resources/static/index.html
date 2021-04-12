@@ -26,9 +26,10 @@
                         lastNumber = response[i].number;
                     }
                 },
-              
-                error: function(xhr) {
-                    //Do Something to handle error
+
+                error: function (xhr, ajaxOptions, thrownError) {
+                    document.getElementById("footer-error").innerHTML="send message error code: " +xhr.status
+                        + " -- " + thrownError;
                 }
             });
         }
@@ -52,15 +53,28 @@
                     
                 },
               
-                error: function(xhr) {
-                    //Do Something to handle error
+                error: function (xhr, ajaxOptions, thrownError) {
+                    document.getElementById("footer-error").innerHTML="send message error code: " +xhr.status
+                        + " error message: " + thrownError;
                 }
             });         
     }
 </script>
+    <style>
+        #footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
 <body>
     <textarea name="chat"></textarea><br/>
     <input id="input" type="text"/>
     <button onclick="sendMessage();">send</button>
+
+    <div id="footer">
+        <div id="footer-error"></div>
+    </div>
 </body>
 </html>
